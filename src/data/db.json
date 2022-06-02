@@ -13,13 +13,14 @@
       "email": "gul@email.com",
       "password": "okok",
       "id": 2
-    },
+    }
+  ],
+  "posts": [
     {
-      "firstName": "Jan",
-      "lastName": "Gul",
-      "email": "gul@email.com",
-      "password": "okok",
-      "id": 3
+      "id": 4,
+      "title": "test",
+      "body": "okokokokokokokokokokkokokokok",
+      "author": "Szymon"
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import {Container} from '@material-ui/core'
 import NavBar from "./components/Navbar/Navbar";
 import Auth from "./components/Auth/Auth";
@@ -11,7 +11,8 @@ const App = () => {
             <Container maxWidth="xl" style={{margin: 0, padding: 0}}>
                 <NavBar/>
                 <Routes>
-                    <Route path="/" exact element={<Home/>}/>
+                    <Route path="/" exact element={<Navigate replace to="/posts" />}/>
+                    <Route path="/posts" exact element={<Home/>}/>
                     <Route path="/auth" exact element={<Auth/>}/>
                 </Routes>
             </Container>
