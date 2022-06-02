@@ -7,35 +7,53 @@ import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
+import { blue } from '@mui/material/colors';
+import CardHeader from '@mui/material/CardHeader';
+import Avatar from '@mui/material/Avatar';
+import moment from 'moment';
+
+import useStyles from './styles';
+
 
 import {useNavigate} from 'react-router-dom'
 
 const Post = ({post}) => {
+    const classes = useStyles();
+
     const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
 
-    const deletePost = async (id) => {
-        await fetch(`http://localhost:8000/posts/${id}`, {
+    const deletePost = (id) => {
+        fetch(`http://localhost:8000/posts/${id}`, {
             method: 'DELETE',
+        }).then(() => {
+            navigate('/');
         })
-
-        navigate('/');
     }
 
     return ( 
         <Card sx={{ maxWidth: 345, bgcolor: '#424242', color: '#fff'}}>
+            <CardHeader
+                className={classes.root}
+                avatar={
+                <Avatar sx={{ bgcolor: blue[600] }}>
+                    {post.author.charAt(0)}
+                </Avatar>
+                }
+                title={post.author}
+                subheader={moment(post.date).fromNow()}
+            />
             <CardMedia
                 component="img"
-                height="140"
+                height="180"
                 image={post.image}
-                alt="green iguana"
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                {post.title}
+                    {post.title}
                 </Typography>
                 <Typography variant="body2">
-                {post.body}
+                    {post.body}
                 </Typography>
             </CardContent>
             <CardActions sx={{justifyContent: 'space-between', height: '40px'}}>
@@ -43,7 +61,7 @@ const Post = ({post}) => {
                     <Button size="small" sx={{color: '#fff'}}>Share</Button>
                     <Button size="small" sx={{color: '#fff'}}>Learn More</Button>
                 </Box>
-                {user && (
+                {(post.author_id === user?.id) && (
                     <IconButton color="inherit" onClick={() => deletePost(post.id)}>
                         <DeleteIcon sx={{fontSize: '20px'}}/>
                     </IconButton>
