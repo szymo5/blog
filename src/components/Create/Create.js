@@ -2,7 +2,7 @@ import {useState} from 'react'
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Box, Typography} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import FileBase from 'react-file-base64';
-import moment from 'moment';
+import {useNavigate} from 'react-router-dom'
 
 import { StyledEngineProvider } from '@mui/material/styles';
 
@@ -10,6 +10,7 @@ import useStyles from './styles';
 
 const Create = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
+    const navigate = useNavigate();
 
     const [postData, setPostData] = useState({
         title: '', body: '', image: '', author: user?.firstName, author_id: user?.id, date: ''
@@ -29,6 +30,8 @@ const Create = () => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(postData)
+            }).then(() => {
+                navigate('/');
             })
     }
 
@@ -70,7 +73,6 @@ const Create = () => {
                                     fullWidth
                                     label="body"
                                     name="body"
-                                    autoFocus
                                     variant="outlined"
                                     className={classes.root}
                                     rows={4}
