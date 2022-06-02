@@ -11,6 +11,7 @@ import useStyles from './styles';
 const Create = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
+    const classes = useStyles();
 
     const [postData, setPostData] = useState({
         title: '', body: '', image: '', author: user?.firstName, author_id: user?.id, date: ''
@@ -35,9 +36,9 @@ const Create = () => {
             })
     }
 
-
-    const classes = useStyles();
-
+    const clear = () => {
+        setPostData({title: '', body: '', image: '', date: ''});
+    }
 
     if(!user){
         return (
@@ -64,6 +65,7 @@ const Create = () => {
                                     autoFocus
                                     variant="outlined"
                                     className={classes.root}
+                                    value={postData.title}
                                     onChange={(e) => setPostData({...postData, title: e.target.value})}
                                 />
                         </Grid>
@@ -77,17 +79,18 @@ const Create = () => {
                                     className={classes.root}
                                     rows={4}
                                     multiline
+                                    value={postData.body}
                                     onChange={(e) => setPostData({...postData, body: e.target.value})}
                                 />
                         </Grid>
                         <Grid item xs={12}>
-                                <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({...postData, image: base64})}/>
+                            <FileBase type="file" multiple={false} onDone={({base64}) => setPostData({...postData, image: base64})}/>
                         </Grid>
                         <Grid item xs={6}>
-                                <Button type="submit" variant="contained" sx={{m: '20px 0px', bgcolor: '#424242', color: "#fff", ":hover": {bgcolor: '#424242'}}} fullWidth>Submit</Button>
+                            <Button type="submit" variant="contained" className={classes.button} fullWidth>Submit</Button>
                         </Grid>
                         <Grid item xs={6}>
-                                <Button variant="contained" sx={{m: '20px 0px', bgcolor: '#424242', color: "#fff", ":hover": {bgcolor: '#424242'}}} fullWidth>Clear</Button>
+                             <Button variant="contained" className={classes.button} fullWidth onClick={clear}>Clear</Button>
                         </Grid>
                     </Grid>
                 </Box>
