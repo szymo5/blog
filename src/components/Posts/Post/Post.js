@@ -32,7 +32,7 @@ const Post = ({post}) => {
     }
 
     return ( 
-        <Card sx={{ maxWidth: 345, bgcolor: '#424242', color: '#fff'}}>
+        <Card sx={{ maxWidth: 345, bgcolor: '#424242', color: '#fff', m: '0 auto'}}>
             <CardHeader
                 className={classes.root}
                 avatar={
