@@ -1,9 +1,8 @@
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button} from '@mui/material';
+import {Grid} from '@mui/material';
 
 import Post from './Post/Post'
 
 const Posts = ({posts}) => {
-    // console.log(posts);
     return (
         <Grid container alignItems="stretch" spacing={3}>
                 {posts.map((post) => (
