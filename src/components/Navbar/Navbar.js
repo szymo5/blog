@@ -51,6 +51,8 @@ const NavBar = () => {
               top: {xs: '0', md: '50%'},
               left: {xs: '0', md: '50%'},
               transform: {xs: 'translate(0,0)', md:'translate(-50%, -50%)'},
+              mr: {xs: '50px', md: '0'},
+              ml: {xs: '-40px', md: '0'},
               width: '800px',
               justifyContent: 'center'
             }} 
