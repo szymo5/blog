@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {useLocation} from 'react-router-dom';
-import { Container, Grow, Box, CircularProgress} from '@mui/material';
+import { Container, Grow, Box, CircularProgress, Typography} from '@mui/material';
 
 import Posts from '../Posts/Posts';
 
@@ -38,7 +38,14 @@ const Home = () => {
                         <CircularProgress sx={{color: '#424242'}}/>
                     </Box>
                 )}
-                {posts && <Posts posts={posts}/>}
+                {(!isLoading && !posts.length) && (
+                    <Box sx={{mt: 8}}>
+                        <Typography variant="h6" align="center">
+                            No posts published
+                        </Typography>
+                    </Box>
+                )}
+                {posts.length > 0 && <Posts posts={posts}/>}
             </Container>
         </Grow>
      );
