@@ -40,17 +40,28 @@ const NavBar = () => {
     <StyledEngineProvider injectFirst>
       <AppBar className={classes.appBar} position="static">
         <Box className={classes.out}>
-          <Link to="/" className={classes.link}>
-            <Typography variant="h3" style={{fontFamily: 'Roboto', fontWeight: '700'}}>Blog</Typography>
-          </Link>
-          <Box sx={{display: { xs: 'none', md: 'flex' }, width: '800px', justifyContent: 'center', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+          <Box  sx={{display: { xs: 'none', md: 'block'}}}>
+            <Link to="/" className={classes.link}>
+              <Typography variant="h3" style={{fontFamily: 'Roboto', fontWeight: '700'}}>Blog</Typography>
+            </Link>
+          </Box>
+          <Box sx=
+            {{display: { xs: 'flex'}, 
+              position: {xs: 'static', md: 'absolute'},
+              top: {xs: '0', md: '50%'},
+              left: {xs: '0', md: '50%'},
+              transform: {xs: 'translate(0,0)', md:'translate(-50%, -50%)'},
+              width: '800px',
+              justifyContent: 'center'
+            }} 
+          >
             {buttons.map((e,i) => (
               <Button component={Link} to={`/${e.toLowerCase()}`} key={i} sx={{color: 'white', fontSize: '18px', margin: '10px'}}>{e}</Button>
             ))}
           </Box>
           <Toolbar disableGutters={true} >
             {user ? (
-              <Box sx={{display: {md: 'flex'}, width: '220px', justifyContent: 'space-between', alignItems: 'center'}}>
+              <Box sx={{display: {xs: 'flex'}, width: '220px', justifyContent: 'space-between', alignItems: 'center'}}>
                 <IconButton fontSize="large" color="inherit">
                   <NotificationsNoneIcon sx={{fontSize: '30px'}}/>
                 </IconButton>
