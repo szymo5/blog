@@ -1,14 +1,12 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom'
+import validator from 'validator';
 
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,13 +15,14 @@ import Typography from '@mui/material/Typography';
 import { StyledEngineProvider } from '@mui/material/styles';
 
 import useStyles from './styles';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 const initialsState = {firstName:'', lastName:'', email:'', password:'', confirmPassword:''};
 
 const Auth = () => {
     const classes = useStyles()
     const navigate = useNavigate()
+    const [passwordError, setPasswordError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
 
     const [isSignup, setIsSignup] = useState(false);
     const [formData, setFormData] = useState(initialsState);
@@ -43,51 +42,89 @@ const Auth = () => {
     }
 
     const signIn = async () => {
-        // fetch(`http://localhost:8000/users?email=${formData.email}&password=${formData.password}`)
-        //     .then((res) => {
-        //         return res.json();
-        //     })
-        //     .then((data) => {
-        //         console.log(data);
-        //     })
+        setPasswordError(false);
+        setEmailError(false);
         try {
+            if(!validator.isEmail(formData.email)){
+                const err = new Error("Invalid email")
+                err.name = 'email';
+                throw err;
+            }
+
             const response = await fetch(`http://localhost:8000/users?email=${formData.email}&password=${formData.password}`);
             const data = await response.json();
+
+            if(!(data.length)){
+                const err = new Error("Invalid credentials");
+                err.name = 'password';
+                throw err;
+            }
 
             localStorage.setItem('profile', JSON.stringify(...data));
             navigate('/');
 
         } catch (error) {
-            console.log(error);
+            switch(error.name){
+                case 'password':
+                    setPasswordError(error.message);
+                    break;
+                case 'email':
+                    setEmailError(error.message);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    const signUp = () => {
+    const signUp = async () => {
+        setPasswordError(false);
+        setEmailError(false);
         try {
+            if(!validator.isEmail(formData.email)){
+                const err = new Error("Invalid email")
+                err.name = 'email';
+                throw err;
+            }
+
             if(!(formData.password === formData.confirmPassword)){
-                throw new Error("Passwords don't match");
+                const err = new Error("Passwords don't match");
+                err.name = 'password';
+                throw err;
             }
 
             delete formData.confirmPassword;
 
-            fetch('http://localhost:8000/users', {
+            const response = await fetch('http://localhost:8000/users', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(formData)
-            }).then((res) => {
-                return res.json();
-            }).then((data) => {
-                localStorage.setItem('profile', JSON.stringify(data));
-                navigate('/');
-            })
+            });
+
+            const data = await response.json();
+
+            localStorage.setItem('profile', JSON.stringify(data));
+            navigate('/');
+
         } catch (error) {
-            console.log(error);
+            switch(error.name){
+                case 'password':
+                    setPasswordError(error.message);
+                    break;
+                case 'email':
+                    setEmailError(error.message);
+                    break;
+                default:
+                    break;
+            }
+            
         }
     }
 
     const switchSign = () => {
         setIsSignup((prevState) => !prevState);
-        //console.log(formData)
+        setPasswordError(false);
+        setEmailError(false);
     }
 
     return ( 
@@ -141,6 +178,8 @@ const Auth = () => {
                                 variant="outlined"
                                 className={classes.root}
                                 onChange={handleChange}
+                                error={emailError ? true : false}
+                                helperText={emailError}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -152,6 +191,8 @@ const Auth = () => {
                                 type="password"
                                 className={classes.root}
                                 onChange={handleChange}
+                                error={passwordError ? true : false}
+                                helperText={passwordError}
                             />
                         </Grid>
                         {isSignup && (
@@ -164,6 +205,8 @@ const Auth = () => {
                                     type="password"
                                     className={classes.root}
                                     onChange={handleChange}
+                                    error={passwordError ? true : false}
+                                    helperText={passwordError}
                                 />
                             </Grid>
                         )}
