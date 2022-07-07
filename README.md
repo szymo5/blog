@@ -4,5 +4,4 @@ LIVE LINK: https://my-site-blog.netlify.app/posts
 
 # Tech Stack
 
-![Tech](https://skills.thijs.gg/icons?i=react,js)<br/>
-REACT    JS
+![Tech](https://skills.thijs.gg/icons?i=react,js,html,css,materialui)
